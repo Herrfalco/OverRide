@@ -1,0 +1,6 @@
+- we can see that nb needs to be equal to 5276 in order to fulfil the if condition
+and to run system function
+
+- we just have to supply that number to scanf by writing it into stdin
+- then we can print .pass file
+	- cat /home/users/level01/.pass
