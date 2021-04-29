@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+void			clear_stdin(void) {
+	int		c;
+
+	while ((c = getchar()) != '\n' && c != -1);
+}
+
+unsigned int	get_unum(void) {
+	unsigned int	nb = 0;
+
+	fflush(stdout);
+	scanf("%u", &nb);
+	clear_stdin();
+	return (nb);
+}
+
+void			prog_timeout(void) {
+	exit(1);
+}
+
+void			decrypt(unsigned int c) {
+	size_t	i;
+	size_t	len;
+	char	str[] = "Q}|u`sfg~sf{}|a3";
+
+	len	= strlen(str);
+	i = 0;
+	do {
+		str[i] ^= c;
+	} while (++i < len);
+	if (!strncmp(str, "Congratulations!", 17)) {
+		system("/bin/sh");
+	} else {
+		puts("Invalid Password");
+	}
+}
+
+void			test(unsigned int nb1, unsigned int nb2) {
+	unsigned int	result = nb2 - nb1;
+
+	if ((result > 0 && result < 10) || (result > 15 && result < 22)) {
+		decrypt(result);
+	} else {
+		decrypt(rand());
+	}
+}
+
+int				main(void) {
+	int		nb;
+
+	srand(time(0));
+	puts("***********************************");
+	puts("*\t\tlevel03\t\t**");
+	puts("***********************************");
+	printf("Password:");
+	scanf("%d", &nb);
+	test(nb, 322424845);
+	return (0);
+}

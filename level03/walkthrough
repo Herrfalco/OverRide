@@ -1,0 +1,14 @@
+- main function is calling test function wich subtracts nb1 from nb2 and uses that result
+multiplied by 4 to reach different code segments
+- if 0 < result < 10 or 15 < result < 22, then the segment of test code that is reach calls
+decrypt function with result as an argument
+- in other cases decrypt is called with a random number as argument
+
+- in decrypt function we can see that the argument c is in fact a binary mask wich is applied
+to str ("Q}|u`sfg~sf{}|a3") through a XOR operation
+- to get our shell we need to find the value of c that converts str into the string "Congratulations!"
+
+- do that we can use pass_cracker.c that gives us 18 as a result
+- hopefuly the number 18 is matching the different conditions inside test
+- so we finally have to enter the password 322424827 (322424845 - 18) and then
+	- cat /home/users/level04/.pass

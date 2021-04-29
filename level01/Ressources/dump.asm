@@ -2,7 +2,7 @@ Dump of assembler code for function verify_user_name:
 0x08048464 <+0>:	push   %ebp									< new stack frame
 0x08048465 <+1>:	mov    %esp,%ebp							|
 
-0x08048467 <+3>:	push   %edi									< save some registers
+0x08048467 <+3>:	push   %edi									< save 2 arguments
 0x08048468 <+4>:	push   %esi									|
 
 0x08048469 <+5>:	sub    $0x10,%esp							< 16 bytes for new frame
@@ -35,7 +35,7 @@ Dump of assembler code for function verify_user_pass:
 0x080484a3 <+0>:	push   %ebp									< new stack frame
 0x080484a4 <+1>:	mov    %esp,%ebp							|
 
-0x080484a6 <+3>:	push   %edi									< save some registers
+0x080484a6 <+3>:	push   %edi									< save 2 arguments
 0x080484a7 <+4>:	push   %esi									|
 
 0x080484a8 <+5>:	mov    0x8(%ebp),%eax						< compare 5 characters of str and "admin"
@@ -62,8 +62,8 @@ Dump of assembler code for function main:
 0x080484d0 <+0>:	push   %ebp									< new stack frame
 0x080484d1 <+1>:	mov    %esp,%ebp							|
 
-0x080484d3 <+3>:	push   %edi									< save some registers
-0x080484d4 <+4>:	push   %ebx									|
+0x080484d3 <+3>:	push   %edi									< save 1 argument
+0x080484d4 <+4>:	push   %ebx									< save 1 register
 
 0x080484d5 <+5>:	and    $0xfffffff0,%esp						< 16 bytes stack alignment
 
