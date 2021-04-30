@@ -3,25 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-void			clear_stdin(void) {
-	int		c;
-
-	while ((c = getchar()) != '\n' && c != -1);
-}
-
-unsigned int	get_unum(void) {
-	unsigned int	nb = 0;
-
-	fflush(stdout);
-	scanf("%u", &nb);
-	clear_stdin();
-	return (nb);
-}
-
-void			prog_timeout(void) {
-	exit(1);
-}
-
 void			decrypt(unsigned int c) {
 	size_t	i;
 	size_t	len;
