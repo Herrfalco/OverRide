@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ptrace.h>
+
+int		auth(char *login, unsigned int serial) {
+	size_t			i;
+	unsigned int	key;
+	size_t			len;
+
+	login[strcspn(login, "\n")] = '\0';
+	len = strnlen(login, 32);
+	if (len <= 5)
+		return (1);
+	if (ptrace(PTRACE_TRACEME, 0, 0x1, NULL) == -1) {
+		puts("\033[32m.---------------------------.");
+		puts("\033[31m| !! TAMPERING DETECTED !!  |");
+		puts("\033[32m'---------------------------'");
+		return (1);
+	}
+
+	unsigned int	r0;
+	unsigned int	r1;
+
+	key = (login[3] ^ 4919) + 6221293;
+	for (i = 0; i < len; ++i) {
+		if (login[i] < ' ')
+			return (1);		
+		r0 = login[i] ^ key;
+		r1 = (r0 * 2284010283) >> 32;
+		key += r0 - (((((r0 - r1) >> 1) + r1) >> 10) * 1337);
+	}
+	return (serial != key);
+}
+
+int		main(void) {
+	unsigned int 	serial;
+	char			login[32];
+
+	puts("***********************************");
+	puts("*\t\tlevel06\t\t  *");
+	puts("***********************************");
+	printf("-> Enter Login: ");
+	fgets(login, 32, stdin);
+	puts("***********************************");
+	puts("***** NEW ACCOUNT DETECTED ********");
+	puts("***********************************");
+	printf("-> Enter Serial: ");
+	scanf("%u", &serial);
+	if (!auth(login, serial)) {
+		puts("Authenticated!");
+		system("/bin/sh");
+		return (0);
+	}
+	return (1);
+}

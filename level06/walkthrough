@@ -1,0 +1,11 @@
+- we need to authenticate using a correct login and password
+- password and login are checked in auth function
+- this function encodes the login and check if the password is equal to this encoded
+login
+
+- we have to create a program that recreates the login transformation
+- we can now enter a random password (at least 5 characters) into pass_cracker wich
+will give us the coresponding password
+	- pass_cracker bonjour -> 6233767
+	- bonjour as login and 6233767 as password
+	- cat /home/users/level07/.pass

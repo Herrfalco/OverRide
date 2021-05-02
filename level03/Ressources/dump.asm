@@ -7,7 +7,7 @@ Dump of assembler code for function decrypt:
 
 0x08048665 <+5>:	sub    $0x40,%esp							< 64 bytes for new frame
 
-0x08048668 <+8>:	mov    %gs:0x14,%eax						< stack canary loaded on stack
+0x08048668 <+8>:	mov    %gs:0x14,%eax						< stack canary saved on stack
 0x0804866e <+14>:	mov    %eax,-0xc(%ebp)						|
 0x08048671 <+17>:	xor    %eax,%eax							|
 
