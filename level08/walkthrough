@@ -1,0 +1,15 @@
+- the program takes a file path as argument
+- it makes a backup of this file in ./backups/
+- if we put .pass as argument we can then read the flag in ./backups/.pass
+
+- we need to do it with level09 .pass file @ /home/users/level09/.pass but
+we are stuck because we don't have permission to create directories inside
+./backups/
+
+- but we can do it inside /tmp
+	- mkdir -p /tmp/backups/home/users/level09/
+- and then call the program from inside tmp with level09 .pass as argument
+	- cd /tmp; /home/users/level08/level08 /home/users/level09/.pass
+- finally we can print our backed up flag
+	- cat /tmp/backups/home/users/level09/.pass
+
