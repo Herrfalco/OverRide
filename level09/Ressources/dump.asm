@@ -129,12 +129,18 @@ Dump of assembler code for function set_username:
 0x0000000000000a44 <+119>:	jmp    0xa6a <set_username+157>								|
 
 -------------------------------------------------------------
-																						
-0x0000000000000a6a <+157>:	cmpl   $0x28,-0x4(%rbp)										? i <= 40
-0x0000000000000a6e <+161>:	jg     0xa81 <set_username+180>								{
+												
+0x0000000000000a6a <+157>:	cmpl   $0x28,-0x4(%rbp)										? while i <= 40
+0x0000000000000a6e <+161>:	jg     0xa81 <set_username+180>								|
+
+0x0000000000000a70 <+163>:	mov    -0x4(%rbp),%eax										? && buff[i] != '\0'
+0x0000000000000a73 <+166>:	cltq   														|
+0x0000000000000a75 <+168>:	movzbl -0x90(%rbp,%rax,1),%eax								|
+0x0000000000000a7d <+176>:	test   %al,%al												|
+0x0000000000000a7f <+178>:	jne    0xa46 <set_username+121>								{
 
 -------------------------------------------------------------
-																						{ do
+
 0x0000000000000a46 <+121>:	mov    -0x4(%rbp),%eax										< buff[i] in msg.usr[i]
 0x0000000000000a49 <+124>:	cltq   														|
 0x0000000000000a4b <+126>:	movzbl -0x90(%rbp,%rax,1),%ecx								|
@@ -144,13 +150,7 @@ Dump of assembler code for function set_username:
 0x0000000000000a5f <+146>:	mov    %cl,0x8c(%rdx,%rax,1)								|
 
 0x0000000000000a66 <+153>:	addl   $0x1,-0x4(%rbp)										< ++i
-
-0x0000000000000a70 <+163>:	mov    -0x4(%rbp),%eax										? while buff[i] != '\0'
-0x0000000000000a73 <+166>:	cltq   														|
-0x0000000000000a75 <+168>:	movzbl -0x90(%rbp,%rax,1),%eax								|
-0x0000000000000a7d <+176>:	test   %al,%al												|
-0x0000000000000a7f <+178>:	jne    0xa46 <set_username+121>								|
-																						}}
+A																						}
 0x0000000000000a81 <+180>:	mov    -0x98(%rbp),%rax										< msg.usr and ">: Welcome, %s" in registers
 0x0000000000000a88 <+187>:	lea    0x8c(%rax),%rdx										|
 0x0000000000000a8f <+194>:	lea    0x165(%rip),%rax        # 0xbfb						|

